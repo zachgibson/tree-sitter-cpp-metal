@@ -110,6 +110,7 @@ module.exports = grammar(C, {
 
   rules: {
     _top_level_item: ($, original) => choice(
+      $.function_definition, // NEW: Ensure function definitions take precedence
       ...original.members.filter((member) => member.content?.name != '_old_style_function_definition'),
       $.namespace_definition,
       $.concept_definition,
@@ -127,7 +128,7 @@ module.exports = grammar(C, {
       alias($.constructor_or_destructor_definition, $.function_definition),
       alias($.operator_cast_definition, $.function_definition),
       alias($.operator_cast_declaration, $.declaration),
-    ),
+    ),    
     _block_item: ($, original) => choice(
       ...original.members.filter((member) => member.content?.name != '_old_style_function_definition'),
       $.namespace_definition,
@@ -186,7 +187,11 @@ module.exports = grammar(C, {
       'mutable',
       'constinit',
       'consteval',
-    ),
+      'constant',  // Metal-specific
+      'device',
+      'thread',
+      'threadgroup'
+    ),    
 
     type_descriptor: (_, original) => prec.right(original),
 
@@ -238,27 +243,31 @@ module.exports = grammar(C, {
       alias($.qualified_type_identifier, $.qualified_identifier),
     )),
 
-    function_definition: ($, original) => ({
-      ...original,
-      members: original.members.map(
-        (e) => e.name !== 'body' ?
-          e :
-          field('body', choice(e.content, $.try_statement))),
-    }),
+    metal_function_qualifier: $ => choice(
+      'fragment',
+      'vertex',
+      'kernel'
+    ),        
 
+    function_definition: $ => prec.right(1, seq(
+      optional($.metal_function_qualifier), // Attach Metal qualifiers here
+      $._declaration_specifiers,
+      field('declarator', $.function_declarator),
+      field('body', $.compound_statement),
+    )),    
+    
     declaration: $ => seq(
+      optional($.metal_function_qualifier), // NEW: Add Metal qualifiers
       $._declaration_specifiers,
       commaSep1(field('declarator', choice(
         seq(
-          // C uses _declaration_declarator here for some nice macro parsing in function declarators,
-          // but this causes a world of pain for C++ so we'll just stick to the normal _declarator here.
           $._declarator,
           optional($.gnu_asm_expression),
         ),
         $.init_declarator,
       ))),
       ';',
-    ),
+    ),    
 
     virtual_specifier: _ => choice(
       'final', // the only legal value here for classes
@@ -674,6 +683,7 @@ module.exports = grammar(C, {
     ref_qualifier: _ => choice('&', '&&'),
 
     _function_declarator_seq: $ => seq(
+      optional($.metal_function_qualifier), // Allow Metal qualifiers before params
       field('parameters', $.parameter_list),
       optional($._function_attributes_start),
       optional($.ref_qualifier),
@@ -681,7 +691,7 @@ module.exports = grammar(C, {
       optional($._function_attributes_end),
       optional($.trailing_return_type),
       optional($._function_postfix),
-    ),
+    ),    
 
     _function_attributes_start: $ => prec(1, choice(
       seq(repeat1($.attribute_specifier), repeat($.type_qualifier)),
