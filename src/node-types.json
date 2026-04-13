@@ -547,6 +547,10 @@
           "named": true
         },
         {
+          "type": "metal_function_qualifier",
+          "named": true
+        },
+        {
           "type": "noexcept",
           "named": true
         },
@@ -2092,6 +2096,10 @@
           "named": true
         },
         {
+          "type": "metal_function_qualifier",
+          "named": true
+        },
+        {
           "type": "ms_declspec_modifier",
           "named": true
         },
@@ -3277,6 +3285,10 @@
           "named": true
         },
         {
+          "type": "metal_function_qualifier",
+          "named": true
+        },
+        {
           "type": "noexcept",
           "named": true
         },
@@ -3330,15 +3342,15 @@
         "required": true,
         "types": [
           {
-            "type": "_declarator",
-            "named": true
-          },
-          {
             "type": "_field_declarator",
             "named": true
           },
           {
             "type": "operator_cast",
+            "named": true
+          },
+          {
+            "type": "qualified_identifier",
             "named": true
           }
         ]
@@ -3383,7 +3395,7 @@
           "named": true
         },
         {
-          "type": "ms_call_modifier",
+          "type": "metal_function_qualifier",
           "named": true
         },
         {
@@ -4115,6 +4127,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "metal_function_qualifier",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "module_declaration",
@@ -7916,6 +7933,10 @@
     "named": false
   },
   {
+    "type": "constant",
+    "named": false
+  },
+  {
     "type": "consteval",
     "named": false
   },
@@ -7945,6 +7966,10 @@
   },
   {
     "type": "delete",
+    "named": false
+  },
+  {
+    "type": "device",
     "named": false
   },
   {
@@ -7992,6 +8017,10 @@
     "named": false
   },
   {
+    "type": "fragment",
+    "named": false
+  },
+  {
     "type": "friend",
     "named": false
   },
@@ -8013,6 +8042,10 @@
   },
   {
     "type": "inline",
+    "named": false
+  },
+  {
+    "type": "kernel",
     "named": false
   },
   {
@@ -8196,7 +8229,15 @@
     "named": true
   },
   {
+    "type": "thread",
+    "named": false
+  },
+  {
     "type": "thread_local",
+    "named": false
+  },
+  {
+    "type": "threadgroup",
     "named": false
   },
   {
@@ -8257,6 +8298,10 @@
   },
   {
     "type": "using",
+    "named": false
+  },
+  {
+    "type": "vertex",
     "named": false
   },
   {
