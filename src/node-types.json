@@ -3342,15 +3342,15 @@
         "required": true,
         "types": [
           {
+            "type": "_declarator",
+            "named": true
+          },
+          {
             "type": "_field_declarator",
             "named": true
           },
           {
             "type": "operator_cast",
-            "named": true
-          },
-          {
-            "type": "qualified_identifier",
             "named": true
           }
         ]
@@ -3396,6 +3396,10 @@
         },
         {
           "type": "metal_function_qualifier",
+          "named": true
+        },
+        {
+          "type": "ms_call_modifier",
           "named": true
         },
         {

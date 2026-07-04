@@ -20,6 +20,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "function_definition"
+        },
+        {
+          "type": "SYMBOL",
           "name": "linkage_specification"
         },
         {
@@ -2905,6 +2909,18 @@
           "members": [
             {
               "type": "SYMBOL",
+              "name": "metal_function_qualifier"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
               "name": "ms_call_modifier"
             },
             {
@@ -3007,6 +3023,18 @@
     "declaration": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "metal_function_qualifier"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "SYMBOL",
           "name": "_declaration_specifiers"
@@ -4904,6 +4932,22 @@
         {
           "type": "STRING",
           "value": "consteval"
+        },
+        {
+          "type": "STRING",
+          "value": "constant"
+        },
+        {
+          "type": "STRING",
+          "value": "device"
+        },
+        {
+          "type": "STRING",
+          "value": "thread"
+        },
+        {
+          "type": "STRING",
+          "value": "threadgroup"
         }
       ]
     },
@@ -11317,6 +11361,23 @@
         ]
       }
     },
+    "metal_function_qualifier": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "fragment"
+        },
+        {
+          "type": "STRING",
+          "value": "vertex"
+        },
+        {
+          "type": "STRING",
+          "value": "kernel"
+        }
+      ]
+    },
     "virtual_specifier": {
       "type": "CHOICE",
       "members": [
@@ -13143,6 +13204,18 @@
     "_function_declarator_seq": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "metal_function_qualifier"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "FIELD",
           "name": "parameters",

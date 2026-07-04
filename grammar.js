@@ -128,7 +128,7 @@ module.exports = grammar(C, {
       alias($.constructor_or_destructor_definition, $.function_definition),
       alias($.operator_cast_definition, $.function_definition),
       alias($.operator_cast_declaration, $.declaration),
-    ),    
+    ),
     _block_item: ($, original) => choice(
       ...original.members.filter((member) => member.content?.name != '_old_style_function_definition'),
       $.namespace_definition,
@@ -187,11 +187,11 @@ module.exports = grammar(C, {
       'mutable',
       'constinit',
       'consteval',
-      'constant',  // Metal-specific
+      'constant', // Metal-specific
       'device',
       'thread',
-      'threadgroup'
-    ),    
+      'threadgroup',
+    ),
 
     type_descriptor: (_, original) => prec.right(original),
 
@@ -246,18 +246,22 @@ module.exports = grammar(C, {
     metal_function_qualifier: $ => choice(
       'fragment',
       'vertex',
-      'kernel'
-    ),        
+      'kernel',
+    ),
 
-    function_definition: $ => prec.right(1, seq(
-      optional($.metal_function_qualifier), // Attach Metal qualifiers here
-      $._declaration_specifiers,
-      field('declarator', $.function_declarator),
-      field('body', $.compound_statement),
-    )),    
-    
+    function_definition: ($, original) => ({
+      ...original,
+      members: [
+        optional($.metal_function_qualifier),
+        ...original.members.map(
+          (e) => e.name !== 'body' ?
+            e :
+            field('body', choice(e.content, $.try_statement))),
+      ],
+    }),
+
     declaration: $ => seq(
-      optional($.metal_function_qualifier), // NEW: Add Metal qualifiers
+      optional($.metal_function_qualifier),
       $._declaration_specifiers,
       commaSep1(field('declarator', choice(
         seq(
@@ -267,7 +271,7 @@ module.exports = grammar(C, {
         $.init_declarator,
       ))),
       ';',
-    ),    
+    ),
 
     virtual_specifier: _ => choice(
       'final', // the only legal value here for classes
@@ -691,7 +695,7 @@ module.exports = grammar(C, {
       optional($._function_attributes_end),
       optional($.trailing_return_type),
       optional($._function_postfix),
-    ),    
+    ),
 
     _function_attributes_start: $ => prec(1, choice(
       seq(repeat1($.attribute_specifier), repeat($.type_qualifier)),

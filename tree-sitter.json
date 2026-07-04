@@ -11,7 +11,8 @@
         "cxx",
         "hpp",
         "hxx",
-        "h"
+        "h",
+        "metal"
       ],
       "highlights": [
         "node_modules/tree-sitter-c/queries/highlights.scm",

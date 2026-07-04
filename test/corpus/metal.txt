@@ -1,0 +1,81 @@
+================================================================================
+Metal function and address space qualifiers
+================================================================================
+
+kernel void compute(device float *data, constant int &count, threadgroup float *scratch) {
+  data[0] = scratch[0];
+}
+
+vertex float4 make_vertex(thread const float *positions) {
+  return float4(0.0);
+}
+
+fragment float4 shade_fragment() {
+  return float4(1.0);
+}
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (function_definition
+    (metal_function_qualifier)
+    type: (primitive_type)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list
+        (parameter_declaration
+          (type_qualifier)
+          type: (primitive_type)
+          declarator: (pointer_declarator
+            declarator: (identifier)))
+        (parameter_declaration
+          (type_qualifier)
+          type: (primitive_type)
+          declarator: (reference_declarator
+            (identifier)))
+        (parameter_declaration
+          (type_qualifier)
+          type: (primitive_type)
+          declarator: (pointer_declarator
+            declarator: (identifier)))))
+    body: (compound_statement
+      (expression_statement
+        (assignment_expression
+          left: (subscript_expression
+            argument: (identifier)
+            indices: (subscript_argument_list
+              (number_literal)))
+          right: (subscript_expression
+            argument: (identifier)
+            indices: (subscript_argument_list
+              (number_literal)))))))
+  (function_definition
+    (metal_function_qualifier)
+    type: (type_identifier)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list
+        (parameter_declaration
+          (type_qualifier)
+          (type_qualifier)
+          type: (primitive_type)
+          declarator: (pointer_declarator
+            declarator: (identifier)))))
+    body: (compound_statement
+      (return_statement
+        (call_expression
+          function: (identifier)
+          arguments: (argument_list
+            (number_literal))))))
+  (function_definition
+    (metal_function_qualifier)
+    type: (type_identifier)
+    declarator: (function_declarator
+      declarator: (identifier)
+      parameters: (parameter_list))
+    body: (compound_statement
+      (return_statement
+        (call_expression
+          function: (identifier)
+          arguments: (argument_list
+            (number_literal)))))))
